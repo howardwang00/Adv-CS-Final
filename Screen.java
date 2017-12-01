@@ -26,7 +26,7 @@ public class Screen extends JPanel implements KeyListener {
 	private boolean playerMoveDown = false;
 	private boolean playerMoveRight = false;
 	private boolean playerMoveLeft = false;
-	private TreeMap<Item, Integer> inventory;
+	private Inventory inventory;
 	private ArrayList<Item> itemList;
 	
     public Screen() {
@@ -35,7 +35,7 @@ public class Screen extends JPanel implements KeyListener {
 		addKeyListener(this);
     	
 		main = new Main();
-		inventory = new TreeMap<Item, Integer>();
+		inventory = new Inventory();
 		itemList = new ArrayList<Item>();
 		itemList.add(new Dandelion(100, 100));
 		itemList.add(new Ember(200, 400));
@@ -53,7 +53,7 @@ public class Screen extends JPanel implements KeyListener {
 		
 		Font arial = new Font("Arial", Font.PLAIN, 30);
 		main.drawMe(g);
-		displayInventory(g);
+		inventory.display(g);
 		
 		Iterator<Item> iterator = itemList.iterator();
 		while(iterator.hasNext()) {
@@ -90,7 +90,7 @@ public class Screen extends JPanel implements KeyListener {
 			
 			for(int i = 0; i < itemList.size(); i++) {
 				if(itemList.get(i).getCollision(main, 0)) {
-					addToInventory(itemList.remove(i));
+					inventory.add(itemList.remove(i));
 					i--;
 				}
 			}
@@ -137,33 +137,5 @@ public class Screen extends JPanel implements KeyListener {
 	}
     public void keyTyped(KeyEvent e) {}
 	
-    public void displayInventory(Graphics g) {
-		int x = 50;
-		int y = 80;
-		
-		g.setColor(Color.black);
-		g.drawString("Inventory", 50, 50);
-		Font arial = new Font("Arial", Font.PLAIN, 15);
-		g.setFont(arial);
-		
-		Iterator<Item> iterator = inventory.keySet().iterator();
-		while(iterator.hasNext()) {
-			Item item = iterator.next();
-			item.drawMe(g, x - 50, y - 25);
-			g.drawString("x" + inventory.get(item), x, y);
-			
-			y = y + 50;
-		}
-		
-	}
-    
-    public void addToInventory(Item item) {
-    	if(inventory.containsKey(item)) {
-			inventory.put(item, inventory.get(item) + 1);
-		} else {
-			System.out.println("Adding new item");
-			inventory.put(item, 1);
-		}
-    }
     
 }
