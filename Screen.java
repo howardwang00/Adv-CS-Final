@@ -37,9 +37,16 @@ public class Screen extends JPanel implements KeyListener {
 		main = new Main();
 		inventory = new Inventory();
 		itemList = new ArrayList<Item>();
-		itemList.add(new Dandelion(100, 100));
-		itemList.add(new Ember(200, 400));
-		itemList.add(new Dandelion(400, 100));
+		itemList.add(new Item(Item.ember, 100, 100));
+		itemList.add(new Item(Item.ember, 150, 100));
+		itemList.add(new Item(Item.ember, 200, 100));
+		itemList.add(new Item(Item.ember, 250, 100));
+		itemList.add(new Item(Item.wood, 100, 100));
+		
+		itemList.add(new Item(Item.wood, 100, 200));
+		itemList.add(new Item(Item.wood, 100, 500));
+		itemList.add(new Item(Item.steel, 100, 500));
+		itemList.add(new Item(Item.steel, 100, 500));
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -57,8 +64,7 @@ public class Screen extends JPanel implements KeyListener {
 		
 		Iterator<Item> iterator = itemList.iterator();
 		while(iterator.hasNext()) {
-			Item item = iterator.next();
-			item.drawMe(g);
+			iterator.next().drawMe(g);
 		}
     }
 	public void animate()
@@ -118,7 +124,6 @@ public class Screen extends JPanel implements KeyListener {
 		if(e.getKeyCode() == 32) {	//Space Key, Interact: talk, pick up
 			
 		}
-        repaint();
     }
 	
     public void keyReleased(KeyEvent e) {

@@ -23,7 +23,7 @@ public class Inventory {
 		Iterator<Item> iterator = inventory.keySet().iterator();
 		while(iterator.hasNext()) {
 			Item item = iterator.next();
-			item.drawMe(g, x - 50, y - 25);
+			item.displayImage(g, x - 50, y - 25);
 			g.drawString("x" + inventory.get(item), x, y);
 			
 			y = y + 50;
