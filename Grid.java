@@ -6,12 +6,10 @@ import java.io.FileReader;
 import java.util.Iterator;
 import java.util.HashSet;
 
-public class Grid extends Movable {
+public class Grid {
 	private HashSet<Tile> grid;
 	
 	public Grid() {
-		x = -100;
-		y = -100;
 		grid = new HashSet<Tile>();
 		
 		File[] levelFiles = new File[2];	//Access File Objects
@@ -39,15 +37,15 @@ public class Grid extends Movable {
 		
 		for(int i = 0; i < levelChars.length; i++) {
 			System.out.println("Loading Level " + (i + 1));
-			x = -100;
-			y = -100;
+			x = -200;
+			y = -200;
 			for(int j = 0; j < levelChars[i].length; j++) {
 				char c = levelChars[i][j];
 				if(c != '\0') {	//at the end of the file, \0 is null for char
 					if(levelChars[i][j] == '\n') {
 						//levelTiles.get(i).add(null);	//add a placeholder for the new line
 						y += Tile.size;
-						x = 0;
+						x = -200;
 					} else {	//char is not a new line
 						grid.add(new Tile(c, x, y));
 						x = x + Tile.size;
