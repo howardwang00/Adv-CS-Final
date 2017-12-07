@@ -12,21 +12,25 @@ public class Inventory {
 	}
 	
 	public void display(Graphics g) {
-		int x = 50;
-		int y = 80;
+		int x = 600;
+		int y = 0;
 		
 		g.setColor(Color.black);
-		g.drawString("Inventory", 50, 50);
-		Font arial = new Font("Arial", Font.PLAIN, 15);
-		g.setFont(arial);
+		g.fillRect(x, y, 200, 600);
+		
+		g.setColor(Color.white);
+		Font font = new Font("Arial", Font.PLAIN, 30);
+		g.setFont(font);
+		g.drawString("Inventory", x + 30, y + 40);
+		y += 100;
 		
 		Iterator<Item> iterator = inventory.keySet().iterator();
 		while(iterator.hasNext()) {
 			Item item = iterator.next();
-			item.displayImage(g, x - 50, y - 25);
-			g.drawString("x" + inventory.get(item), x, y);
+			item.displayImage(g, x + 20, y);
+			g.drawString("x" + inventory.get(item), x + 80, y + 40);
 			
-			y = y + 50;
+			y = y + 75;
 		}
 	}
     
@@ -34,7 +38,6 @@ public class Inventory {
     	if(inventory.containsKey(item)) {
 			inventory.put(item, inventory.get(item) + 1);
 		} else {
-			System.out.println("Adding new item");
 			inventory.put(item, 1);
 		}
     }

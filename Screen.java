@@ -21,11 +21,15 @@ import java.util.TreeMap;
 import java.util.Iterator;
 
 public class Screen extends JPanel implements KeyListener {
+	private int level = 1;
+	private Grid grid;
+	
 	private Main main;
 	private boolean playerMoveUp = false;
 	private boolean playerMoveDown = false;
 	private boolean playerMoveRight = false;
 	private boolean playerMoveLeft = false;
+	
 	private Inventory inventory;
 	private ArrayList<Item> itemList;
 	
@@ -34,6 +38,8 @@ public class Screen extends JPanel implements KeyListener {
     	this.setFocusable(true);
 		addKeyListener(this);
     	
+		grid = new Grid();
+		
 		main = new Main();
 		inventory = new Inventory();
 		itemList = new ArrayList<Item>();
@@ -45,8 +51,8 @@ public class Screen extends JPanel implements KeyListener {
 		
 		itemList.add(new Item(Item.wood, 100, 200));
 		itemList.add(new Item(Item.wood, 100, 500));
-		itemList.add(new Item(Item.steel, 100, 500));
-		itemList.add(new Item(Item.steel, 100, 500));
+		itemList.add(new Item(Item.steel, 300, 500));
+		itemList.add(new Item(Item.steel, 200, 400));
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -55,17 +61,21 @@ public class Screen extends JPanel implements KeyListener {
 	
     public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.WHITE);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 800, 600);
 		
 		Font arial = new Font("Arial", Font.PLAIN, 30);
-		main.drawMe(g);
-		inventory.display(g);
 		
+		grid.display(g);
+		
+		//Draw items
 		Iterator<Item> iterator = itemList.iterator();
 		while(iterator.hasNext()) {
 			iterator.next().drawMe(g);
 		}
+		
+		main.drawMe(g);
+		inventory.display(g);
     }
 	public void animate()
     {
@@ -82,16 +92,36 @@ public class Screen extends JPanel implements KeyListener {
 			
 			//Movement
 			if(playerMoveUp == true) {
-				main.moveUp();
+				grid.moveDown();
+				
+				Iterator<Item> iterator = itemList.iterator();
+				while(iterator.hasNext()) {
+					iterator.next().moveDown();
+				}
 			}
 			if(playerMoveDown == true) {
-				main.moveDown();
+				grid.moveUp();
+				
+				Iterator<Item> iterator = itemList.iterator();
+				while(iterator.hasNext()) {
+					iterator.next().moveUp();
+				}
 			}
 			if(playerMoveRight == true) {
-				main.moveRight();
+				grid.moveLeft();
+				
+				Iterator<Item> iterator = itemList.iterator();
+				while(iterator.hasNext()) {
+					iterator.next().moveLeft();
+				}
 			}
 			if(playerMoveLeft == true) {
-				main.moveLeft();
+				grid.moveRight();
+				
+				Iterator<Item> iterator = itemList.iterator();
+				while(iterator.hasNext()) {
+					iterator.next().moveRight();
+				}
 			}
 			
 			for(int i = 0; i < itemList.size(); i++) {

@@ -7,3 +7,10 @@
 /Inventory.class
 /Item$Type.class
 /Movable.class
+/Tile.class
+/Collidable.class
+/Grid.class
+/Map.class
+/Location.class
+/Coordinate.class
+/Drawable.class
