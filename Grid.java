@@ -3,8 +3,8 @@ import java.awt.Graphics;
 import java.io.File;
 import java.io.FileReader;
 
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Grid {
 	private HashSet<Tile> grid;
@@ -46,6 +46,9 @@ public class Grid {
 						//levelTiles.get(i).add(null);	//add a placeholder for the new line
 						y += Tile.size;
 						x = -200;
+					} else if(c == 'o') {	//char is not a new line
+						grid.add(new Obstacle(c, x, y));
+						x = x + Tile.size;
 					} else {	//char is not a new line
 						grid.add(new Tile(c, x, y));
 						x = x + Tile.size;
@@ -86,6 +89,20 @@ public class Grid {
 		Iterator<Tile> iterator = grid.iterator();
 		while(iterator.hasNext()) {
 			iterator.next().moveLeft();
+		}
+	}
+	
+	public void checkObstacle(Main main) {
+		Iterator<Tile> iterator = grid.iterator();
+		while(iterator.hasNext()) {
+			Tile tile = iterator.next();
+			if(tile.type().equals(Tile.obstacle)) {
+				Obstacle obstacle = (Obstacle)tile;
+				if(obstacle.getCollision(main, 0)) {
+					main.hit(1);
+					iterator.remove();
+				}
+			}
 		}
 	}
 }

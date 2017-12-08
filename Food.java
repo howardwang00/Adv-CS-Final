@@ -4,37 +4,23 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Item extends Movable implements Comparable<Item> {
-	private String type;
+public class Food extends Movable {
 	
-	public static final String ember = "ember";
-	public static final String wood = "wood";
-	public static final String steel = "steel";
-	public static final String concrete = "concrete";
-	public static final String paint = "paint";
-	
-	public Item(String type, int x, int y) {
-		this.type = type;
+	public Food(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.width = 50;
 		this.height = 50;
 		
 		try {
-			image = ImageIO.read(new File("./Images/" + type + ".png"));
+			image = ImageIO.read(new File("./Images/food.png"));
         } catch (IOException e) {}
-	}
-	
-	public String type() {
-		return type;
 	}
 	
 	public void drawMe(Graphics g) {
 		g.drawImage(image, (int)(this.x), (int)(this.y), width, height, null);
 	}
-	public void displayImage(Graphics g, int x, int y) {
-		g.drawImage(image, (int)x, (int)y, width, height, null);
-	}
+	
 	public boolean getCollision(Main main) {
 		int mainX = main.getX();
 		int mainY = main.getY();
@@ -48,10 +34,5 @@ public class Item extends Movable implements Comparable<Item> {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public int compareTo(Item item) {
-		return type.compareTo(item.type());
 	}
 }

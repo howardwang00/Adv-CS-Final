@@ -14,3 +14,5 @@
 /Location.class
 /Coordinate.class
 /Drawable.class
+/Obstacle.class
+/Food.class

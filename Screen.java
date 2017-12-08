@@ -32,6 +32,7 @@ public class Screen extends JPanel implements KeyListener {
 	
 	private Inventory inventory;
 	private ArrayList<Item> itemList;
+	private ArrayList<Food> foodList;
 	
     public Screen() {
     	this.setLayout(null);
@@ -43,16 +44,26 @@ public class Screen extends JPanel implements KeyListener {
 		main = new Main();
 		inventory = new Inventory();
 		itemList = new ArrayList<Item>();
-		itemList.add(new Item(Item.ember, 100, 100));
+		itemList.add(new Item(Item.ember, 700, 100));
 		itemList.add(new Item(Item.ember, 150, 100));
 		itemList.add(new Item(Item.ember, 200, 100));
 		itemList.add(new Item(Item.ember, 250, 100));
-		itemList.add(new Item(Item.wood, 100, 100));
+		itemList.add(new Item(Item.wood, 100, 0));
 		
 		itemList.add(new Item(Item.wood, 100, 200));
 		itemList.add(new Item(Item.wood, 100, 500));
 		itemList.add(new Item(Item.steel, 300, 500));
 		itemList.add(new Item(Item.steel, 200, 400));
+		itemList.add(new Item(Item.concrete, 700, 500));
+		itemList.add(new Item(Item.concrete, 800, 900));
+		itemList.add(new Item(Item.concrete, 100, 100));
+		itemList.add(new Item(Item.paint, 200, 500));
+		
+		foodList = new ArrayList<Food>();
+		foodList.add(new Food(200, 300));
+		foodList.add(new Food(400, 300));
+		foodList.add(new Food(800, 200));
+		foodList.add(new Food(100, 600));
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -74,8 +85,16 @@ public class Screen extends JPanel implements KeyListener {
 			iterator.next().drawMe(g);
 		}
 		
+		//Draw food
+		Iterator<Food> foodIterator = foodList.iterator();
+		while(foodIterator.hasNext()) {
+			foodIterator.next().drawMe(g);
+		}
+		
 		main.drawMe(g);
 		inventory.display(g);
+		
+		g.drawString("Level: " + level, 10, 30);
     }
 	public void animate()
     {
@@ -98,6 +117,11 @@ public class Screen extends JPanel implements KeyListener {
 				while(iterator.hasNext()) {
 					iterator.next().moveDown();
 				}
+				
+				Iterator<Food> foodIterator = foodList.iterator();
+				while(foodIterator.hasNext()) {
+					foodIterator.next().moveDown();
+				}
 			}
 			if(playerMoveDown == true) {
 				grid.moveUp();
@@ -105,6 +129,11 @@ public class Screen extends JPanel implements KeyListener {
 				Iterator<Item> iterator = itemList.iterator();
 				while(iterator.hasNext()) {
 					iterator.next().moveUp();
+				}
+				
+				Iterator<Food> foodIterator = foodList.iterator();
+				while(foodIterator.hasNext()) {
+					foodIterator.next().moveUp();
 				}
 			}
 			if(playerMoveRight == true) {
@@ -114,6 +143,11 @@ public class Screen extends JPanel implements KeyListener {
 				while(iterator.hasNext()) {
 					iterator.next().moveLeft();
 				}
+				
+				Iterator<Food> foodIterator = foodList.iterator();
+				while(foodIterator.hasNext()) {
+					foodIterator.next().moveLeft();
+				}
 			}
 			if(playerMoveLeft == true) {
 				grid.moveRight();
@@ -122,14 +156,30 @@ public class Screen extends JPanel implements KeyListener {
 				while(iterator.hasNext()) {
 					iterator.next().moveRight();
 				}
+				
+				Iterator<Food> foodIterator = foodList.iterator();
+				while(foodIterator.hasNext()) {
+					foodIterator.next().moveRight();
+				}
 			}
 			
 			for(int i = 0; i < itemList.size(); i++) {
-				if(itemList.get(i).getCollision(main, 0)) {
+				if(itemList.get(i).getCollision(main)) {
 					inventory.add(itemList.remove(i));
 					i--;
 				}
 			}
+			
+			for(int i = 0; i < foodList.size(); i++) {
+				if(foodList.get(i).getCollision(main)) {
+					foodList.remove(i);
+					main.heal();
+					i--;
+				}
+			}
+			
+			
+			grid.checkObstacle(main);
 			
             repaint();
         }
