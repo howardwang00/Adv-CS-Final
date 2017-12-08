@@ -33,6 +33,7 @@ public class Screen extends JPanel implements KeyListener {
 	private Inventory inventory;
 	private ArrayList<Item> itemList;
 	private ArrayList<Food> foodList;
+	private ArrayList<Enemy> enemyList;
 	
     public Screen() {
     	this.setLayout(null);
@@ -55,7 +56,7 @@ public class Screen extends JPanel implements KeyListener {
 		itemList.add(new Item(Item.steel, 300, 500));
 		itemList.add(new Item(Item.steel, 200, 400));
 		itemList.add(new Item(Item.concrete, 700, 500));
-		itemList.add(new Item(Item.concrete, 800, 900));
+		itemList.add(new Item(Item.concrete, 800, 600));
 		itemList.add(new Item(Item.concrete, 100, 100));
 		itemList.add(new Item(Item.paint, 200, 500));
 		
@@ -64,6 +65,11 @@ public class Screen extends JPanel implements KeyListener {
 		foodList.add(new Food(400, 300));
 		foodList.add(new Food(800, 200));
 		foodList.add(new Food(100, 600));
+		
+		enemyList = new ArrayList<Enemy>();
+		enemyList.add(new Enemy(100, 50));
+		enemyList.add(new Enemy(100, 150));
+		enemyList.add(new Enemy(100, 250));
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -89,6 +95,12 @@ public class Screen extends JPanel implements KeyListener {
 		Iterator<Food> foodIterator = foodList.iterator();
 		while(foodIterator.hasNext()) {
 			foodIterator.next().drawMe(g);
+		}
+		
+		//Draw enemies
+		Iterator<Enemy> enemyIterator = enemyList.iterator();
+		while(enemyIterator.hasNext()) {
+			enemyIterator.next().drawMe(g);
 		}
 		
 		main.drawMe(g);
@@ -122,6 +134,11 @@ public class Screen extends JPanel implements KeyListener {
 				while(foodIterator.hasNext()) {
 					foodIterator.next().moveDown();
 				}
+				
+				Iterator<Enemy> enemyIterator = enemyList.iterator();
+				while(enemyIterator.hasNext()) {
+					enemyIterator.next().moveDown();
+				}
 			}
 			if(playerMoveDown == true) {
 				grid.moveUp();
@@ -134,6 +151,11 @@ public class Screen extends JPanel implements KeyListener {
 				Iterator<Food> foodIterator = foodList.iterator();
 				while(foodIterator.hasNext()) {
 					foodIterator.next().moveUp();
+				}
+				
+				Iterator<Enemy> enemyIterator = enemyList.iterator();
+				while(enemyIterator.hasNext()) {
+					enemyIterator.next().moveUp();
 				}
 			}
 			if(playerMoveRight == true) {
@@ -148,6 +170,11 @@ public class Screen extends JPanel implements KeyListener {
 				while(foodIterator.hasNext()) {
 					foodIterator.next().moveLeft();
 				}
+				
+				Iterator<Enemy> enemyIterator = enemyList.iterator();
+				while(enemyIterator.hasNext()) {
+					enemyIterator.next().moveLeft();
+				}
 			}
 			if(playerMoveLeft == true) {
 				grid.moveRight();
@@ -161,12 +188,21 @@ public class Screen extends JPanel implements KeyListener {
 				while(foodIterator.hasNext()) {
 					foodIterator.next().moveRight();
 				}
+				
+				Iterator<Enemy> enemyIterator = enemyList.iterator();
+				while(enemyIterator.hasNext()) {
+					enemyIterator.next().moveRight();
+				}
 			}
 			
-			for(int i = 0; i < itemList.size(); i++) {
-				if(itemList.get(i).getCollision(main)) {
-					inventory.add(itemList.remove(i));
-					i--;
+			if(itemList.isEmpty()) {
+				startLevel2();
+			} else {
+				for(int i = 0; i < itemList.size(); i++) {
+					if(itemList.get(i).getCollision(main)) {
+						inventory.add(itemList.remove(i));
+						i--;
+					}
 				}
 			}
 			
@@ -174,6 +210,15 @@ public class Screen extends JPanel implements KeyListener {
 				if(foodList.get(i).getCollision(main)) {
 					foodList.remove(i);
 					main.heal();
+					i--;
+				}
+			}
+			
+			for(int i = 0; i < enemyList.size(); i++) {
+				enemyList.get(i).move();
+				if(enemyList.get(i).getCollision(main)) {
+					enemyList.remove(i);
+					main.hit(2);
 					i--;
 				}
 			}
@@ -222,5 +267,26 @@ public class Screen extends JPanel implements KeyListener {
 	}
     public void keyTyped(KeyEvent e) {}
 	
+    public void startLevel2() {
+    	System.out.println("Level 2");
+    	level = 2;
+    	inventory = new Inventory();
+    	itemList = new ArrayList<Item>();
+    	itemList.add(new Item(Item.ember, 250, 100));
+		itemList.add(new Item(Item.wood, 100, 0));
+		
+		itemList.add(new Item(Item.wood, 100, 200));
+		itemList.add(new Item(Item.wood, 100, 500));
+		itemList.add(new Item(Item.steel, 300, 500));
+		itemList.add(new Item(Item.steel, 200, 400));
+		itemList.add(new Item(Item.concrete, 700, 500));
+		itemList.add(new Item(Item.concrete, 800, 900));
+		itemList.add(new Item(Item.concrete, 100, 100));
+		itemList.add(new Item(Item.paint, 200, 500));
+		
+		foodList = new ArrayList<Food>();
+		enemyList = new ArrayList<Enemy>();
+    	
+    }
     
 }
