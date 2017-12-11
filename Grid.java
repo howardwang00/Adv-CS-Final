@@ -67,6 +67,7 @@ public class Grid {
 		if(level == 2) {
 			return true;
 		} else {
+			grid = new HashSet<Tile>();
 			level++;
 			loadLevel();
 			return false;
