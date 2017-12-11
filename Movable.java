@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 public abstract class Movable {
 	protected double x;
 	protected double y;
+	protected int initialX;
+	protected int initialY;
 	protected int width;
 	protected int height;
 	protected BufferedImage image;
@@ -37,5 +39,10 @@ public abstract class Movable {
 			return true;
 		}
 		return false;
+	}
+	
+	public void reset() {
+		this.x = initialX;
+		this.y = initialY;
 	}
 }

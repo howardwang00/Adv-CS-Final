@@ -13,6 +13,8 @@ public class Enemy extends Movable {
 		this.y = y;
 		this.width = 50;
 		this.height = 50;
+		this.initialX = x;
+		this.initialY = y;
 		
 		this.xRelative = (int)(Math.random() * 400);
 		this.moveRight = true;

@@ -110,7 +110,7 @@ public class Grid {
 		}
 	}
 	
-	public void checkObstacle(Main main) {
+	public boolean checkObstacle(Main main) {
 		Iterator<Tile> iterator = grid.iterator();
 		while(iterator.hasNext()) {
 			Tile tile = iterator.next();
@@ -118,9 +118,18 @@ public class Grid {
 				Obstacle obstacle = (Obstacle)tile;
 				if(obstacle.getCollision(main, 0)) {
 					main.hit(1);
-					iterator.remove();
+					reset();
+					return true;
 				}
 			}
+		}
+		return false;
+	}
+	
+	private void reset() {
+		Iterator<Tile> iterator = grid.iterator();
+		while(iterator.hasNext()) {
+			iterator.next().reset();
 		}
 	}
 }

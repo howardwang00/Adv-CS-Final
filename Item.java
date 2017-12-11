@@ -19,6 +19,8 @@ public class Item extends Movable implements Comparable<Item> {
 		this.y = y;
 		this.width = 50;
 		this.height = 50;
+		this.initialX = x;
+		this.initialY = y;
 		
 		try {
 			image = ImageIO.read(new File("./Images/" + type + ".png"));

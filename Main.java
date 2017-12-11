@@ -26,8 +26,8 @@ public class Main {
         } catch (IOException e) {}
 		
 		
-		width = 100;
-		height = 100;
+		width = 50;
+		height = 50;
 		x = 400 - width/2;
 		y = 300 - height/2;
 		
@@ -39,19 +39,19 @@ public class Main {
 	
 	public void drawMe(Graphics g) {
 		g.drawImage(image, x, y, width, height, null);
-		g.setColor(Color.black);
-		g.drawString("You", x + width/2 - 15, y + height + 10);
+		g.setColor(Color.white);
+		g.drawString("You", x + width/4, y + height + 20);
 		
 		int healthX = x;
 		int healthY = y - 10;
 		g.setColor(Color.BLACK);
-		g.drawRect(healthX, healthY, 100, 25);
+		g.drawRect(healthX, healthY, 50, 15);
 		g.setColor(Color.RED);
-		g.fillRect(healthX, healthY, 100, 25);
+		g.fillRect(healthX, healthY, 50, 15);
 		g.setColor(Color.GREEN);
 		
-		double healthWidth = (healthBar.size() / maxHealth) * 100;
-		g.fillRect(healthX, healthY, (int)healthWidth, 25);	//Current Health
+		double healthWidth = (healthBar.size() / maxHealth) * 50;
+		g.fillRect(healthX, healthY, (int)healthWidth, 15);	//Current Health
 	}
 	
 	public int getX() {

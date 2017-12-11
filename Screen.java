@@ -219,13 +219,15 @@ public class Screen extends JPanel implements KeyListener {
 				enemyList.get(i).move();
 				if(enemyList.get(i).getCollision(main)) {
 					enemyList.remove(i);
-					main.hit(2);
+					main.hit(5);
 					i--;
 				}
 			}
 			
 			
-			grid.checkObstacle(main);
+			if(grid.checkObstacle(main)) {
+				reset();
+			}
 			
             repaint();
         }
@@ -289,6 +291,20 @@ public class Screen extends JPanel implements KeyListener {
 		foodList = new ArrayList<Food>();
 		enemyList = new ArrayList<Enemy>();
     	
+    }
+    
+    public void reset() {
+    	for(int i = 0; i < itemList.size(); i++) {
+			itemList.get(i).reset();
+		}
+		
+    	for(int i = 0; i < foodList.size(); i++) {
+			foodList.get(i).reset();
+		}
+    	
+    	for(int i = 0; i < enemyList.size(); i++) {
+			enemyList.get(i).reset();
+		}
     }
     
 }

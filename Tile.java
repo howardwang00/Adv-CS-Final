@@ -22,6 +22,8 @@ public class Tile extends Movable {
 		this.y = y;
 		this.height = size;
 		this.width = size;
+		this.initialX = x;
+		this.initialY = y;
 		
 		if(c == 'w') {	//Setting the type based on the character
 			type = Tile.water;
