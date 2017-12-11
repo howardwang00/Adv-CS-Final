@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 public class Enemy extends Movable {
 	private int xRelative;
 	private boolean moveRight;
+	private static final int distance = 400;
 	
 	public Enemy(int x, int y) {
 		this.x = x;
@@ -13,7 +14,7 @@ public class Enemy extends Movable {
 		this.width = 50;
 		this.height = 50;
 		
-		this.xRelative = (int)(Math.random() * 100);
+		this.xRelative = (int)(Math.random() * 400);
 		this.moveRight = true;
 		
 		try {
@@ -22,7 +23,7 @@ public class Enemy extends Movable {
 	}
 	
 	public void move() {
-		if(xRelative > 200) {
+		if(xRelative > 400) {
 			moveRight = false;
 		} else if(xRelative < 0) {
 			moveRight = true;

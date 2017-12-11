@@ -21,7 +21,6 @@ import java.util.TreeMap;
 import java.util.Iterator;
 
 public class Screen extends JPanel implements KeyListener {
-	private int level = 1;
 	private Grid grid;
 	
 	private Main main;
@@ -68,8 +67,10 @@ public class Screen extends JPanel implements KeyListener {
 		
 		enemyList = new ArrayList<Enemy>();
 		enemyList.add(new Enemy(100, 50));
-		enemyList.add(new Enemy(100, 150));
+		enemyList.add(new Enemy(500, 150));
 		enemyList.add(new Enemy(100, 250));
+		enemyList.add(new Enemy(300, -50));
+		enemyList.add(new Enemy(200, 0));
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -106,7 +107,7 @@ public class Screen extends JPanel implements KeyListener {
 		main.drawMe(g);
 		inventory.display(g);
 		
-		g.drawString("Level: " + level, 10, 30);
+		g.drawString("Level: " + grid.level(), 10, 30);
     }
 	public void animate()
     {
@@ -196,7 +197,7 @@ public class Screen extends JPanel implements KeyListener {
 			}
 			
 			if(itemList.isEmpty()) {
-				startLevel2();
+				nextLevel();
 			} else {
 				for(int i = 0; i < itemList.size(); i++) {
 					if(itemList.get(i).getCollision(main)) {
@@ -267,9 +268,10 @@ public class Screen extends JPanel implements KeyListener {
 	}
     public void keyTyped(KeyEvent e) {}
 	
-    public void startLevel2() {
-    	System.out.println("Level 2");
-    	level = 2;
+    public void nextLevel() {
+    	if(grid.nextLevel()) {
+    		//Game Over
+    	}
     	inventory = new Inventory();
     	itemList = new ArrayList<Item>();
     	itemList.add(new Item(Item.ember, 250, 100));
