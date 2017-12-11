@@ -35,7 +35,6 @@ public class Tile extends Movable {
 		
 		try {
 			if(Tile.waterImage == null) {
-				System.out.println("Loading Images");
 				Tile.waterImage = ImageIO.read(new File("./Images/water.png"));
 				Tile.landImage = ImageIO.read(new File("./Images/land.png"));
 				Tile.obstacleImage = ImageIO.read(new File("./Images/obstacle.png"));

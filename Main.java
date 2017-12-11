@@ -95,13 +95,15 @@ public class Main {
     }
     
     public void heal() {
-    	System.out.println("Healed");
-    	
     	healthBar.add(1);
     	healthBar.add(1);
     	while(healthBar.size() > maxHealth) {
     		healthBar.pop();
     	}
+    }
+    
+    public boolean defeated() {
+    	return healthBar.isEmpty();
     }
     
 }

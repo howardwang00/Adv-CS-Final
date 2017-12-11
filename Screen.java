@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 public class Screen extends JPanel implements KeyListener {
 	private Grid grid;
+	private boolean gameOver;
 	
 	private Main main;
 	private boolean playerMoveUp = false;
@@ -38,39 +39,8 @@ public class Screen extends JPanel implements KeyListener {
     	this.setLayout(null);
     	this.setFocusable(true);
 		addKeyListener(this);
-    	
-		grid = new Grid();
 		
-		main = new Main();
-		inventory = new Inventory();
-		itemList = new ArrayList<Item>();
-		itemList.add(new Item(Item.ember, 700, 100));
-		itemList.add(new Item(Item.ember, 150, 100));
-		itemList.add(new Item(Item.ember, 200, 100));
-		itemList.add(new Item(Item.ember, 250, 100));
-		itemList.add(new Item(Item.wood, 100, 0));
-		
-		itemList.add(new Item(Item.wood, 100, 200));
-		itemList.add(new Item(Item.wood, 100, 500));
-		itemList.add(new Item(Item.steel, 300, 500));
-		itemList.add(new Item(Item.steel, 200, 400));
-		itemList.add(new Item(Item.concrete, 700, 500));
-		itemList.add(new Item(Item.concrete, 800, 600));
-		itemList.add(new Item(Item.concrete, 100, 100));
-		itemList.add(new Item(Item.paint, 200, 500));
-		
-		foodList = new ArrayList<Food>();
-		foodList.add(new Food(200, 300));
-		foodList.add(new Food(400, 300));
-		foodList.add(new Food(800, 200));
-		foodList.add(new Food(100, 600));
-		
-		enemyList = new ArrayList<Enemy>();
-		enemyList.add(new Enemy(100, 50));
-		enemyList.add(new Enemy(500, 150));
-		enemyList.add(new Enemy(100, 250));
-		enemyList.add(new Enemy(300, -50));
-		enemyList.add(new Enemy(200, 0));
+		startGame();
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -84,30 +54,42 @@ public class Screen extends JPanel implements KeyListener {
 		
 		Font arial = new Font("Arial", Font.PLAIN, 30);
 		
-		grid.display(g);
-		
-		//Draw items
-		Iterator<Item> iterator = itemList.iterator();
-		while(iterator.hasNext()) {
-			iterator.next().drawMe(g);
+		if(gameOver) {
+			g.setColor(Color.BLUE);
+			g.fillRect(0, 0, 800, 600);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", Font.PLAIN, 60));
+			g.drawString("Blue Screen of", 50, 100);
+			g.drawString("Game Over :(", 150, 200);
+			g.setFont(arial);
+			g.drawString("Press Space to Restart", 200, 500);
+			
+		} else {
+			grid.display(g);
+			
+			//Draw items
+			Iterator<Item> iterator = itemList.iterator();
+			while(iterator.hasNext()) {
+				iterator.next().drawMe(g);
+			}
+			
+			//Draw food
+			Iterator<Food> foodIterator = foodList.iterator();
+			while(foodIterator.hasNext()) {
+				foodIterator.next().drawMe(g);
+			}
+			
+			//Draw enemies
+			Iterator<Enemy> enemyIterator = enemyList.iterator();
+			while(enemyIterator.hasNext()) {
+				enemyIterator.next().drawMe(g);
+			}
+			
+			main.drawMe(g);
+			inventory.display(g);
+			
+			g.drawString("Level: " + grid.level(), 10, 30);
 		}
-		
-		//Draw food
-		Iterator<Food> foodIterator = foodList.iterator();
-		while(foodIterator.hasNext()) {
-			foodIterator.next().drawMe(g);
-		}
-		
-		//Draw enemies
-		Iterator<Enemy> enemyIterator = enemyList.iterator();
-		while(enemyIterator.hasNext()) {
-			enemyIterator.next().drawMe(g);
-		}
-		
-		main.drawMe(g);
-		inventory.display(g);
-		
-		g.drawString("Level: " + grid.level(), 10, 30);
     }
 	public void animate()
     {
@@ -121,121 +103,126 @@ public class Screen extends JPanel implements KeyListener {
                 Thread.currentThread().interrupt();
             }
 			
-			
-			//Movement
-			if(playerMoveUp == true) {
-				grid.moveDown();
-				
-				Iterator<Item> iterator = itemList.iterator();
-				while(iterator.hasNext()) {
-					iterator.next().moveDown();
-				}
-				
-				Iterator<Food> foodIterator = foodList.iterator();
-				while(foodIterator.hasNext()) {
-					foodIterator.next().moveDown();
-				}
-				
-				Iterator<Enemy> enemyIterator = enemyList.iterator();
-				while(enemyIterator.hasNext()) {
-					enemyIterator.next().moveDown();
-				}
-			}
-			if(playerMoveDown == true) {
-				grid.moveUp();
-				
-				Iterator<Item> iterator = itemList.iterator();
-				while(iterator.hasNext()) {
-					iterator.next().moveUp();
-				}
-				
-				Iterator<Food> foodIterator = foodList.iterator();
-				while(foodIterator.hasNext()) {
-					foodIterator.next().moveUp();
-				}
-				
-				Iterator<Enemy> enemyIterator = enemyList.iterator();
-				while(enemyIterator.hasNext()) {
-					enemyIterator.next().moveUp();
-				}
-			}
-			if(playerMoveRight == true) {
-				grid.moveLeft();
-				
-				Iterator<Item> iterator = itemList.iterator();
-				while(iterator.hasNext()) {
-					iterator.next().moveLeft();
-				}
-				
-				Iterator<Food> foodIterator = foodList.iterator();
-				while(foodIterator.hasNext()) {
-					foodIterator.next().moveLeft();
-				}
-				
-				Iterator<Enemy> enemyIterator = enemyList.iterator();
-				while(enemyIterator.hasNext()) {
-					enemyIterator.next().moveLeft();
-				}
-			}
-			if(playerMoveLeft == true) {
-				grid.moveRight();
-				
-				Iterator<Item> iterator = itemList.iterator();
-				while(iterator.hasNext()) {
-					iterator.next().moveRight();
-				}
-				
-				Iterator<Food> foodIterator = foodList.iterator();
-				while(foodIterator.hasNext()) {
-					foodIterator.next().moveRight();
-				}
-				
-				Iterator<Enemy> enemyIterator = enemyList.iterator();
-				while(enemyIterator.hasNext()) {
-					enemyIterator.next().moveRight();
-				}
-			}
-			
-			if(itemList.isEmpty()) {
-				nextLevel();
-			} else {
-				for(int i = 0; i < itemList.size(); i++) {
-					if(itemList.get(i).getCollision(main)) {
-						inventory.add(itemList.remove(i));
-						i--;
-					}
-				}
-			}
-			
-			for(int i = 0; i < foodList.size(); i++) {
-				if(foodList.get(i).getCollision(main)) {
-					foodList.remove(i);
-					main.heal();
-					i--;
-				}
-			}
-			
-			for(int i = 0; i < enemyList.size(); i++) {
-				enemyList.get(i).move();
-				if(enemyList.get(i).getCollision(main)) {
-					enemyList.remove(i);
-					main.hit(5);
-					i--;
-				}
-			}
-			
-			
-			if(grid.checkObstacle(main)) {
-				reset();
-			}
-			
-            repaint();
+            if(!gameOver) {
+            	//Movement
+    			if(playerMoveUp == true) {
+    				grid.moveDown();
+    				
+    				Iterator<Item> iterator = itemList.iterator();
+    				while(iterator.hasNext()) {
+    					iterator.next().moveDown();
+    				}
+    				
+    				Iterator<Food> foodIterator = foodList.iterator();
+    				while(foodIterator.hasNext()) {
+    					foodIterator.next().moveDown();
+    				}
+    				
+    				Iterator<Enemy> enemyIterator = enemyList.iterator();
+    				while(enemyIterator.hasNext()) {
+    					enemyIterator.next().moveDown();
+    				}
+    			}
+    			if(playerMoveDown == true) {
+    				grid.moveUp();
+    				
+    				Iterator<Item> iterator = itemList.iterator();
+    				while(iterator.hasNext()) {
+    					iterator.next().moveUp();
+    				}
+    				
+    				Iterator<Food> foodIterator = foodList.iterator();
+    				while(foodIterator.hasNext()) {
+    					foodIterator.next().moveUp();
+    				}
+    				
+    				Iterator<Enemy> enemyIterator = enemyList.iterator();
+    				while(enemyIterator.hasNext()) {
+    					enemyIterator.next().moveUp();
+    				}
+    			}
+    			if(playerMoveRight == true) {
+    				grid.moveLeft();
+    				
+    				Iterator<Item> iterator = itemList.iterator();
+    				while(iterator.hasNext()) {
+    					iterator.next().moveLeft();
+    				}
+    				
+    				Iterator<Food> foodIterator = foodList.iterator();
+    				while(foodIterator.hasNext()) {
+    					foodIterator.next().moveLeft();
+    				}
+    				
+    				Iterator<Enemy> enemyIterator = enemyList.iterator();
+    				while(enemyIterator.hasNext()) {
+    					enemyIterator.next().moveLeft();
+    				}
+    			}
+    			if(playerMoveLeft == true) {
+    				grid.moveRight();
+    				
+    				Iterator<Item> iterator = itemList.iterator();
+    				while(iterator.hasNext()) {
+    					iterator.next().moveRight();
+    				}
+    				
+    				Iterator<Food> foodIterator = foodList.iterator();
+    				while(foodIterator.hasNext()) {
+    					foodIterator.next().moveRight();
+    				}
+    				
+    				Iterator<Enemy> enemyIterator = enemyList.iterator();
+    				while(enemyIterator.hasNext()) {
+    					enemyIterator.next().moveRight();
+    				}
+    			}
+    			
+    			if(itemList.isEmpty()) {
+    				nextLevel();
+    			} else {
+    				for(int i = 0; i < itemList.size(); i++) {
+    					if(itemList.get(i).getCollision(main)) {
+    						inventory.add(itemList.remove(i));
+    						i--;
+    					}
+    				}
+    			}
+    			
+    			for(int i = 0; i < foodList.size(); i++) {
+    				if(foodList.get(i).getCollision(main)) {
+    					foodList.remove(i);
+    					main.heal();
+    					i--;
+    				}
+    			}
+    			
+    			for(int i = 0; i < enemyList.size(); i++) {
+    				enemyList.get(i).move();
+    				if(enemyList.get(i).getCollision(main)) {
+    					enemyList.remove(i);
+    					main.hit(5);
+    					i--;
+    				}
+    			}
+    			
+    			
+    			if(grid.checkObstacle(main)) {
+    				reset();
+    			}
+    			
+    			if(main.defeated()) {
+    				gameOver();
+    			}
+    			
+                repaint();
+            }
         }
     }
 	
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == 80) {	//Level Cheat Key
-			
+		if(e.getKeyCode() == 80) {	//Level Cheat Key (p)
+			nextLevel();
         }
         if(e.getKeyCode() == 38) {	//Up Arrow
 			playerMoveUp = true;
@@ -249,8 +236,16 @@ public class Screen extends JPanel implements KeyListener {
 		if(e.getKeyCode() == 39) {	//Right Arrow
 			playerMoveRight = true;
         }
-		if(e.getKeyCode() == 32) {	//Space Key, Interact: talk, pick up
-			
+		if(e.getKeyCode() == 32) {	//Space Key
+			if(gameOver) {
+				startGame();
+				
+				 try {
+	            	Thread.sleep(100);	//wait for restart
+	            } catch(InterruptedException ex) {
+	                Thread.currentThread().interrupt();
+	            }
+			}
 		}
     }
 	
@@ -272,25 +267,10 @@ public class Screen extends JPanel implements KeyListener {
 	
     public void nextLevel() {
     	if(grid.nextLevel()) {
-    		//Game Over
+    		gameOver();
+    		return;
     	}
-    	inventory = new Inventory();
-    	itemList = new ArrayList<Item>();
-    	itemList.add(new Item(Item.ember, 250, 100));
-		itemList.add(new Item(Item.wood, 100, 0));
-		
-		itemList.add(new Item(Item.wood, 100, 200));
-		itemList.add(new Item(Item.wood, 100, 500));
-		itemList.add(new Item(Item.steel, 300, 500));
-		itemList.add(new Item(Item.steel, 200, 400));
-		itemList.add(new Item(Item.concrete, 700, 500));
-		itemList.add(new Item(Item.concrete, 800, 900));
-		itemList.add(new Item(Item.concrete, 100, 100));
-		itemList.add(new Item(Item.paint, 200, 500));
-		
-		foodList = new ArrayList<Food>();
-		enemyList = new ArrayList<Enemy>();
-    	
+    	instantiateLevel(grid.level());
     }
     
     public void reset() {
@@ -305,6 +285,72 @@ public class Screen extends JPanel implements KeyListener {
     	for(int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).reset();
 		}
+    }
+    
+    public void startGame() {
+    	grid = new Grid();
+    	main = new Main();
+    	
+		instantiateLevel(1);
+		gameOver = false;
+    }
+    
+    public void gameOver() {
+    	inventory = new Inventory();
+    	itemList = new ArrayList<Item>();
+    	foodList = new ArrayList<Food>();
+		enemyList = new ArrayList<Enemy>();
+		
+		gameOver = true;
+    }
+    
+    public void instantiateLevel(int level) {
+    	inventory = new Inventory();
+    	itemList = new ArrayList<Item>();
+		foodList = new ArrayList<Food>();
+		enemyList = new ArrayList<Enemy>();
+		
+    	if(level == 1) {
+    		itemList.add(new Item(Item.ember, 700, 100));
+    		itemList.add(new Item(Item.ember, 150, 100));
+    		itemList.add(new Item(Item.ember, 200, 100));
+    		itemList.add(new Item(Item.ember, 250, 100));
+    		itemList.add(new Item(Item.wood, 100, 0));
+    		
+    		itemList.add(new Item(Item.wood, 100, 200));
+    		itemList.add(new Item(Item.wood, 100, 500));
+    		itemList.add(new Item(Item.steel, 300, 500));
+    		itemList.add(new Item(Item.steel, 200, 400));
+    		itemList.add(new Item(Item.concrete, 700, 500));
+    		itemList.add(new Item(Item.concrete, 800, 600));
+    		itemList.add(new Item(Item.concrete, 100, 100));
+    		itemList.add(new Item(Item.paint, 200, 500));
+    		
+    		foodList = new ArrayList<Food>();
+    		foodList.add(new Food(200, 300));
+    		foodList.add(new Food(400, 300));
+    		foodList.add(new Food(800, 200));
+    		foodList.add(new Food(100, 600));
+    		
+    		enemyList = new ArrayList<Enemy>();
+    		enemyList.add(new Enemy(100, 50));
+    		enemyList.add(new Enemy(500, 150));
+    		enemyList.add(new Enemy(100, 250));
+    		enemyList.add(new Enemy(300, -50));
+    		enemyList.add(new Enemy(200, 0));
+    	} else if(level == 2) {
+    		itemList.add(new Item(Item.ember, 250, 100));
+    		itemList.add(new Item(Item.wood, 100, 0));
+    		
+    		itemList.add(new Item(Item.wood, 100, 200));
+    		itemList.add(new Item(Item.wood, 100, 500));
+    		itemList.add(new Item(Item.steel, 300, 500));
+    		itemList.add(new Item(Item.steel, 200, 400));
+    		itemList.add(new Item(Item.concrete, 700, 500));
+    		itemList.add(new Item(Item.concrete, 800, 300));
+    		itemList.add(new Item(Item.concrete, 100, 100));
+    		itemList.add(new Item(Item.paint, 200, 500));
+    	}
     }
     
 }
