@@ -179,6 +179,7 @@ public class Screen extends JPanel implements KeyListener {
     			}
     			
     			if(itemList.isEmpty()) {
+    				System.out.println("Item List is Empty - Next Level");
     				nextLevel();
     			} else {
     				for(int i = 0; i < itemList.size(); i++) {
@@ -222,7 +223,8 @@ public class Screen extends JPanel implements KeyListener {
 	
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == 80) {	//Level Cheat Key (p)
-			nextLevel();
+			System.out.println("Level Skipped");
+			itemList = new ArrayList<Item>();
         }
         if(e.getKeyCode() == 38) {	//Up Arrow
 			playerMoveUp = true;
@@ -240,7 +242,7 @@ public class Screen extends JPanel implements KeyListener {
 			if(gameOver) {
 				startGame();
 				
-				 try {
+				try {
 	            	Thread.sleep(100);	//wait for restart
 	            } catch(InterruptedException ex) {
 	                Thread.currentThread().interrupt();
@@ -267,6 +269,7 @@ public class Screen extends JPanel implements KeyListener {
 	
     public void nextLevel() {
     	if(grid.nextLevel()) {
+    		System.out.println("Game Over");
     		gameOver();
     		return;
     	}
