@@ -23,6 +23,7 @@ import java.util.Iterator;
 public class Screen extends JPanel implements KeyListener {
 	private Grid grid;
 	private boolean gameOver;
+	private boolean startScreen = true;
 	
 	private Main main;
 	private boolean playerMoveUp = false;
@@ -40,7 +41,6 @@ public class Screen extends JPanel implements KeyListener {
     	this.setFocusable(true);
 		addKeyListener(this);
 		
-		startGame();
     }
     public Dimension getPreferredSize() {
         //Sets the size of the panel
@@ -54,7 +54,18 @@ public class Screen extends JPanel implements KeyListener {
 		
 		Font arial = new Font("Arial", Font.PLAIN, 30);
 		
-		if(gameOver) {
+		if(startScreen) {
+			g.setColor(Color.BLUE);
+			g.fillRect(0, 0, 800, 600);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", Font.PLAIN, 60));
+			g.drawString("Bridge Builder", 200, 100);
+			g.setFont(arial);
+			g.drawString("Arrow Keys to Move", 50, 250);
+			g.drawString("Collect items to complete the level.", 50, 300);
+			g.drawString("Avoid enemies. Collect fruit for health.", 50, 350);
+			g.drawString("Press Space to Start", 200, 500);
+		} else if(gameOver) {
 			g.setColor(Color.BLUE);
 			g.fillRect(0, 0, 800, 600);
 			g.setColor(Color.WHITE);
@@ -103,7 +114,7 @@ public class Screen extends JPanel implements KeyListener {
                 Thread.currentThread().interrupt();
             }
 			
-            if(!gameOver) {
+            if(!startScreen && !gameOver) {
             	//Movement
     			if(playerMoveUp == true) {
     				grid.moveDown();
@@ -239,7 +250,10 @@ public class Screen extends JPanel implements KeyListener {
 			playerMoveRight = true;
         }
 		if(e.getKeyCode() == 32) {	//Space Key
-			if(gameOver) {
+			if(startScreen) {
+				startGame();
+				startScreen = false;
+			} else if(gameOver) {
 				startGame();
 				
 				try {
@@ -318,15 +332,18 @@ public class Screen extends JPanel implements KeyListener {
     		itemList.add(new Item(Item.ember, 150, 100));
     		itemList.add(new Item(Item.ember, 200, 100));
     		itemList.add(new Item(Item.ember, 250, 100));
-    		itemList.add(new Item(Item.wood, 100, 0));
     		
+    		itemList.add(new Item(Item.wood, 100, 0));
     		itemList.add(new Item(Item.wood, 0, 200));
     		itemList.add(new Item(Item.wood, 50, 400));
+    		
     		itemList.add(new Item(Item.steel, 300, 500));
     		itemList.add(new Item(Item.steel, 200, 400));
+    		
     		itemList.add(new Item(Item.concrete, 700, 450));
     		itemList.add(new Item(Item.concrete, 500, 250));
     		itemList.add(new Item(Item.concrete, 100, 100));
+    		
     		itemList.add(new Item(Item.paint, 800, 400));
     		itemList.add(new Item(Item.paint, 700, -50));
     		
@@ -341,17 +358,43 @@ public class Screen extends JPanel implements KeyListener {
     		enemyList.add(new Enemy(300, -50));
     		enemyList.add(new Enemy(200, 0));
     	} else if(level == 2) {
-    		itemList.add(new Item(Item.ember, 250, 100));
-    		itemList.add(new Item(Item.wood, 100, 0));
+    		int y = 200;
+    		for(int i = 0; i < 10; i++) {
+    			itemList.add(new Item(Item.ember, 400, y));
+    			y -= 50;
+    		}
     		
-    		itemList.add(new Item(Item.wood, 100, 200));
-    		itemList.add(new Item(Item.wood, 100, 500));
-    		itemList.add(new Item(Item.steel, 300, 500));
-    		itemList.add(new Item(Item.steel, 200, 400));
-    		itemList.add(new Item(Item.concrete, 700, 500));
-    		itemList.add(new Item(Item.concrete, 800, 300));
-    		itemList.add(new Item(Item.concrete, 100, 100));
-    		itemList.add(new Item(Item.paint, 200, 500));
+    		itemList.add(new Item(Item.wood, 150, -100));
+    		itemList.add(new Item(Item.wood, 0, 200));
+    		itemList.add(new Item(Item.wood, 50, 100));
+    		
+    		itemList.add(new Item(Item.steel, 300, -100));
+    		itemList.add(new Item(Item.steel, 200, -300));
+    		
+    		itemList.add(new Item(Item.concrete, 300, 100));
+    		itemList.add(new Item(Item.concrete, 500, 250));
+    		itemList.add(new Item(Item.concrete, 150, 100));
+    		
+    		itemList.add(new Item(Item.paint, 800, 200));
+    		itemList.add(new Item(Item.paint, 700, -50));
+    		
+    		foodList.add(new Food(200, 0));
+    		foodList.add(new Food(500, -100));
+    		foodList.add(new Food(800, -200));
+    		foodList.add(new Food(0, -250));
+    		foodList.add(new Food(800, 150));
+    		foodList.add(new Food(850, 150));
+    		foodList.add(new Food(850, 200));
+    		
+    		int x = 200;
+    		y = 150;
+    		for(int i = 0; i < 5; i++) {
+    			x = (int)(Math.random() * 100) + 300;
+    			enemyList.add(new Enemy(x, y));
+    			x = (int)(Math.random() * 100) + x;
+    			enemyList.add(new Enemy(x, y));
+    			y -= 100;
+    		}
     	}
     }
     

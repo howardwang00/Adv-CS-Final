@@ -11,8 +11,8 @@ public class Grid {
 	private File[] levelFiles;
 	private int level;
 	
-	private static final int x = -300;
-	private static final int y = -300;
+	private static int x;
+	private static int y;
 	
 	public Grid() {
 		grid = new HashSet<Tile>();
@@ -22,6 +22,8 @@ public class Grid {
 		levelFiles[1] = new File("./Levels/level2.txt");
 		
 		level = 1;
+		x = -300;
+		y = -300;
 		loadLevel();
 	}
 	
@@ -72,6 +74,12 @@ public class Grid {
 		} else {
 			grid = new HashSet<Tile>();
 			level++;
+			
+			if(level == 2) {
+				x = -300;
+				y = -500;
+			}
+			
 			loadLevel();
 			return false;
 		}
