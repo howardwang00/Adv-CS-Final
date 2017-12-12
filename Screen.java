@@ -320,25 +320,24 @@ public class Screen extends JPanel implements KeyListener {
     		itemList.add(new Item(Item.ember, 250, 100));
     		itemList.add(new Item(Item.wood, 100, 0));
     		
-    		itemList.add(new Item(Item.wood, 100, 200));
-    		itemList.add(new Item(Item.wood, 100, 500));
+    		itemList.add(new Item(Item.wood, 0, 200));
+    		itemList.add(new Item(Item.wood, 50, 400));
     		itemList.add(new Item(Item.steel, 300, 500));
     		itemList.add(new Item(Item.steel, 200, 400));
-    		itemList.add(new Item(Item.concrete, 700, 500));
-    		itemList.add(new Item(Item.concrete, 800, 600));
+    		itemList.add(new Item(Item.concrete, 700, 450));
+    		itemList.add(new Item(Item.concrete, 500, 250));
     		itemList.add(new Item(Item.concrete, 100, 100));
-    		itemList.add(new Item(Item.paint, 200, 500));
+    		itemList.add(new Item(Item.paint, 800, 400));
+    		itemList.add(new Item(Item.paint, 700, -50));
     		
-    		foodList = new ArrayList<Food>();
     		foodList.add(new Food(200, 300));
     		foodList.add(new Food(400, 300));
     		foodList.add(new Food(800, 200));
-    		foodList.add(new Food(100, 600));
+    		foodList.add(new Food(0, 400));
     		
-    		enemyList = new ArrayList<Enemy>();
     		enemyList.add(new Enemy(100, 50));
     		enemyList.add(new Enemy(500, 150));
-    		enemyList.add(new Enemy(100, 250));
+    		enemyList.add(new Enemy(400, 450));
     		enemyList.add(new Enemy(300, -50));
     		enemyList.add(new Enemy(200, 0));
     	} else if(level == 2) {

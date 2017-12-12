@@ -11,6 +11,9 @@ public class Grid {
 	private File[] levelFiles;
 	private int level;
 	
+	private static final int x = -300;
+	private static final int y = -300;
+	
 	public Grid() {
 		grid = new HashSet<Tile>();
 		
@@ -41,21 +44,21 @@ public class Grid {
 		//each tile is 50 tall and wide
 		
 		System.out.println("Loading Level " + level);
-		int x = -200;
-		int y = -200;
+		int tileX = x;
+		int tileY = y;
 		for(int i = 0; i < levelChars.length; i++) {
 			char c = levelChars[i];
 			if(c != '\0') {	//at the end of the file, \0 is null for char
 				if(levelChars[i] == '\n') {
 					//levelTiles.get(i).add(null);	//add a placeholder for the new line
-					y += Tile.size;
-					x = -200;
+					tileY += Tile.size;
+					tileX = x;
 				} else if(c == 'o') {	//char is not a new line
-					grid.add(new Obstacle(c, x, y));
-					x = x + Tile.size;
+					grid.add(new Obstacle(c, tileX, tileY));
+					tileX = tileX + Tile.size;
 				} else {	//char is not a new line
-					grid.add(new Tile(c, x, y));
-					x = x + Tile.size;
+					grid.add(new Tile(c, tileX, tileY));
+					tileX = tileX + Tile.size;
 				}
 			} else {
 				break;
