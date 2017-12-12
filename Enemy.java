@@ -16,7 +16,7 @@ public class Enemy extends Movable {
 		this.initialX = x;
 		this.initialY = y;
 		
-		this.xRelative = (int)(Math.random() * 400);
+		this.xRelative = (int)(Math.random() * distance);
 		this.moveRight = true;
 		
 		try {
@@ -25,7 +25,7 @@ public class Enemy extends Movable {
 	}
 	
 	public void move() {
-		if(xRelative > 400) {
+		if(xRelative > distance) {
 			moveRight = false;
 		} else if(xRelative < 0) {
 			moveRight = true;

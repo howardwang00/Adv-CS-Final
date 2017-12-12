@@ -3,21 +3,14 @@ import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.image.BufferedImage;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 import java.net.URL;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.Iterator;
 
 public class Screen extends JPanel implements KeyListener {
