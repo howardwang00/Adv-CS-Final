@@ -214,6 +214,7 @@ public class Screen extends JPanel implements KeyListener {
     				if(enemyList.get(i).getCollision(main)) {
     					enemyList.remove(i);
     					main.hit(5);
+    					reset();
     					i--;
     				}
     			}
@@ -287,10 +288,13 @@ public class Screen extends JPanel implements KeyListener {
     		gameOver();
     		return;
     	}
+    	main.recover();
     	instantiateLevel(grid.level());
     }
     
     public void reset() {
+    	grid.reset();
+    	
     	for(int i = 0; i < itemList.size(); i++) {
 			itemList.get(i).reset();
 		}

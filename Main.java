@@ -102,6 +102,12 @@ public class Main {
     	}
     }
     
+    public void recover() {
+    	while(healthBar.size() < maxHealth) {
+    		healthBar.add(1);
+    	}
+    }
+    
     public boolean defeated() {
     	return healthBar.isEmpty();
     }
