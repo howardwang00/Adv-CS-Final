@@ -196,6 +196,7 @@ public class Screen extends JPanel implements KeyListener {
     				for(int i = 0; i < itemList.size(); i++) {
     					if(itemList.get(i).getCollision(main)) {
     						inventory.add(itemList.remove(i));
+    						collectItemSound();
     						i--;
     					}
     				}
@@ -212,6 +213,7 @@ public class Screen extends JPanel implements KeyListener {
     			for(int i = 0; i < enemyList.size(); i++) {
     				enemyList.get(i).move();
     				if(enemyList.get(i).getCollision(main)) {
+    					hitSound();
     					enemyList.remove(i);
     					main.hit(5);
     					reset();
@@ -221,6 +223,7 @@ public class Screen extends JPanel implements KeyListener {
     			
     			
     			if(grid.checkObstacle(main)) {
+    				hitSound();
     				reset();
     			}
     			
@@ -401,5 +404,33 @@ public class Screen extends JPanel implements KeyListener {
     		}
     	}
     }
+    
+    public void collectItemSound() {
+		try
+        {
+           URL url = this.getClass().getClassLoader().getResource("./Sounds/collectItem.wav");
+           Clip clip = AudioSystem.getClip();
+           clip.open(AudioSystem.getAudioInputStream(url));
+           clip.start();
+        }
+        catch (Exception exc)
+        {
+            exc.printStackTrace(System.out);
+        }
+	}
+    
+    public void hitSound() {
+		try
+        {
+           URL url = this.getClass().getClassLoader().getResource("./Sounds/punch.wav");
+           Clip clip = AudioSystem.getClip();
+           clip.open(AudioSystem.getAudioInputStream(url));
+           clip.start();
+        }
+        catch (Exception exc)
+        {
+            exc.printStackTrace(System.out);
+        }
+	}
     
 }
