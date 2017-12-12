@@ -4,13 +4,14 @@ public class Obstacle extends Tile {
 		super(c, x, y);
 	}
 	
-	public boolean getCollision(Main main, int direction) {
+	@Override
+	public boolean getCollision(Main main) {
 		int mainX = main.getX();
 		int mainY = main.getY();
 		int mainHeight = main.getHeight() - 5;
 		int mainWidth = main.getWidth() - 15;
 		
-		int objectHeight = height - 5;
+		int objectHeight = height - 30;
 		int objectWidth = width - 8;
 		
 		if(mainX + mainWidth > x && mainX < x + objectWidth && mainY + mainHeight > y && mainY < y + objectHeight) {

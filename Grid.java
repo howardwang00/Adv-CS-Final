@@ -127,7 +127,7 @@ public class Grid {
 			Tile tile = iterator.next();
 			if(tile.type().equals(Tile.obstacle)) {
 				Obstacle obstacle = (Obstacle)tile;
-				if(obstacle.getCollision(main, 0)) {
+				if(obstacle.getCollision(main)) {
 					main.hit(1);
 					return true;
 				}
